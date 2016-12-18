@@ -38,7 +38,7 @@ void show(SDL_Surface *s)
 	SDL_Flip(screen);
 
 	snprintf(fname, sizeof(fname), "out-%08d.bmp", frame++);
-	SDL_SaveBMP(s, fname);
+	//SDL_SaveBMP(s, fname);
 }
 
 
