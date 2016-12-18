@@ -1,30 +1,25 @@
-Index: /home/ico/sandbox/mulogic/fdt/src/public/lua-5.3.1/src/lauxlib.c
-===================================================================
---- /home/ico/sandbox/mulogic/fdt/src/public/lua-5.3.1/src/lauxlib.c	(revision 2753)
-+++ /home/ico/sandbox/mulogic/fdt/src/public/lua-5.3.1/src/lauxlib.c	(working copy)
-@@ -936,12 +936,22 @@
+--- lauxlib.c	(revision 2753)
++++ lauxlib.c	(working copy)
+@@ -936,12 +936,21 @@
  
  static void *l_alloc (void *ud, void *ptr, size_t osize, size_t nsize) {
    (void)ud; (void)osize;  /* not used */
++  static FILE *f_log = NULL;
 +  void *pn = NULL;
    if (nsize == 0) {
      free(ptr);
 -    return NULL;
++  } else {
++    pn = realloc(ptr, nsize);
    }
 -  else
 -    return realloc(ptr, nsize);
-+  else {
-+	  pn = realloc(ptr, nsize);
-+  }
-+  static FILE *f_log =NULL;
-+  if(f_log == NULL) {
-+	  f_log = fopen("/tmp/malloc.log", "w");
++  if(f_log == NULL && getenv("MALLOC_LOG")) {
++    f_log = fopen(getenv("MALLOC_LOG"), "w");
 +  }
 +  if(f_log) {
-+	  fprintf(f_log, "0x%lx 0x%lx %lu %lu\n", (long)ptr, (long)pn, osize, nsize);
-+	  fflush(f_log);
++    fprintf(f_log, "0x%lx 0x%lx %lu %lu\n", (long)ptr, (long)pn, osize, nsize);
++    fflush(f_log);
 +  }
 +  return pn;
  }
- 
- 

@@ -38,7 +38,7 @@ void show(SDL_Surface *s)
 	SDL_Flip(screen);
 
 	snprintf(fname, sizeof(fname), "out-%08d.bmp", frame++);
-	//SDL_SaveBMP(s, fname);
+	SDL_SaveBMP(s, fname);
 }
 
 
@@ -76,6 +76,9 @@ void draw(uint32_t a, uint32_t s, uint32_t color)
 {
 	if(amin == 0) amin = a;
 	a = (a - amin);
+
+	a /= 2;
+	s /= 2;
 	
 	while(s--) {
 		uint32_t x, y;
@@ -95,7 +98,7 @@ void draw(uint32_t a, uint32_t s, uint32_t color)
 	if(n++ > n_show || t_now > t_show) {
 		show(screen);
 		t_show = t_now + 40;
-		n_show = n_show + 100;
+		n_show = n_show + 10000;
 	}
 }
 
